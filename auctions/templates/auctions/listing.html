@@ -1,0 +1,57 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+
+{% if listing %}
+    <h2>{{ listing.title }}</h2>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% endif %}
+
+    <p>{{ listing.description }}</p>
+    <p>{{ listing.current_price }}</p>
+
+    {% if listing.image_url %}
+        <img src="{{ listing.image_url }}" width="300">
+    {% endif %}
+
+        <form method="POST" action="{% url 'bidding' listing.id %}">
+    {% csrf_token %}
+    <input type="number" name="amount" placeholder="Enter bid">
+    <button type="submit" name="bid_form">BID</button>
+    </form>
+
+
+
+{% elif listings %}
+    {% for i in listings %}
+        <a href="{% url 'listing' i.id %}">
+            <h2>{{ i.title }}</h2>
+        </a>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+       {% endif %}
+
+
+        <p>{{ i.description }}</p>
+        <p>{{ i.current_price }}</p>
+
+        <form method="POST" action="{% url 'bidding' i.id %}">
+        {% csrf_token %}
+        <input type="number" name="amount" placeholder="Enter bid">
+        <button type="submit" name="bid_form">BID</button>
+      </form>
+
+    {% endfor %}
+    
+{% endif %}
+
+
+{% endblock %}
