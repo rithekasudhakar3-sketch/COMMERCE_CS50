@@ -5,7 +5,7 @@
     <h2>{{ listing.title }}</h2>
     {% if messages %}
     {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
+        <div>
             {{ message }}
         </div>
     {% endfor %}
@@ -14,14 +14,22 @@
     <p>{{ listing.description }}</p>
     <p>{{ listing.current_price }}</p>
 
-    {% if listing.image_url %}
-        <img src="{{ listing.image_url }}" width="300">
+    {% if listing.image_URL %}
+        <img src="{{ listing.image_URL }}" width="300">
     {% endif %}
-
-        <form method="POST" action="{% url 'bidding' listing.id %}">
+    {%if listing.is_active == True%}
+    <form method="POST" action="{% url 'bidding' listing.id %}">
     {% csrf_token %}
     <input type="number" name="amount" placeholder="Enter bid">
     <button type="submit" name="bid_form">BID</button>
+    </form>
+    {%else%}
+    <p>BIDING IS CLOSED</p>
+    {%endif%}
+    <!--watchlist-->
+    <form method="POST" action="{% url 'watchlist' listing.id %}">
+    {% csrf_token %}
+    <button type="submit" name="watch_form">ADD TO WATCHLIST</button>
     </form>
 
 
@@ -42,13 +50,25 @@
 
         <p>{{ i.description }}</p>
         <p>{{ i.current_price }}</p>
-
+        
+        {% if i.image_URL %}
+            <img src="{{ i.image_URL }}" width="300" style="margin-bottom : 10px">
+        {% endif %}
+        {%if i.is_active == True%}
         <form method="POST" action="{% url 'bidding' i.id %}">
         {% csrf_token %}
         <input type="number" name="amount" placeholder="Enter bid">
         <button type="submit" name="bid_form">BID</button>
-      </form>
-
+        </form>
+        {%else%}
+        <p>BIDING IS CLOSED</p>
+        {%endif%}
+      <p>Owner : {{ i.owner }}</p>
+            {%if i.owner ==  request.user%}
+        <a href="{% url 'close_auction' i.id %}">
+            <button>Close Auction</button>
+        </a>
+      {%endif%}
     {% endfor %}
     
 {% endif %}

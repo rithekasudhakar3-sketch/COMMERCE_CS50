@@ -23,4 +23,3 @@ class BidsForm(forms.ModelForm):
     class Meta:
         model = Bids
         fields =['amount']
-

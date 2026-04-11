@@ -97,7 +97,7 @@ def listing(request, id=None):
 def watchlist_view(request, id):
     listing = get_object_or_404(Listing, pk=id)
 
-    if request.method == "POST":
+    if request.method == "POST" and "watch_form" in request.POST:
         existing = WatchList.objects.filter(
             owner=request.user, listing=listing
         ).first()
@@ -107,8 +107,7 @@ def watchlist_view(request, id):
         else:
             WatchList.objects.create(owner=request.user, listing=listing)
 
-    return HttpResponseRedirect(reverse("listing", kwargs={'id': id}))
-
+    return redirect("listing", id=id)
 
 @login_required
 def watchlist_page(request):
@@ -153,5 +152,18 @@ def bidding(request, id):
         else:
             # Show form validation errors
             messages.error(request, f"Invalid bid: {form.errors}")
+
+    return redirect("listing", id=id)
+ 
+@login_required
+def close_auction(request, id):
+    listing = get_object_or_404(Listing, id=id)
+
+    # Optional: only owner can close
+    if request.user != listing.owner:
+        return redirect("listing", id=id)
+
+    listing.is_active = False
+    listing.save()
 
     return redirect("listing", id=id)

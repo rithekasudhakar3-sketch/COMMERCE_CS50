@@ -54,11 +54,9 @@ class Comment(models.Model):
               return self.amount
 
 class WatchList(models.Model):
-                        # WHO is watching?
-                        owner = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+                        owner = models.ForeignKey(User, on_delete=models.CASCADE)
                         
-                        # WHAT are they watching?
-                        listing = models.ForeignKey(Listing, on_delete=models.CASCADE, null=True, blank=True)
+                        listing = models.ForeignKey(Listing, on_delete=models.CASCADE,null = True)
 
        
 
