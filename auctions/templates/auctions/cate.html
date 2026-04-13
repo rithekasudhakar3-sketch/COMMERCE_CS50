@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+{%block body%}
+<h2>{{ category }}</h2>
+
+{% for listing in listings %}
+    <p>{{ listing.title }} - {{ listing.category }}</p>
+    {% if listing.image_URL %}
+            <img src="{{ listing.image_URL }}" width="300" style="margin-bottom : 10px">
+     {% endif %}
+{% empty %}
+    <p>No listings found</p>
+{% endfor %}
+{%endblock%}

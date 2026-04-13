@@ -167,3 +167,21 @@ def close_auction(request, id):
     listing.save()
 
     return redirect("listing", id=id)
+@login_required
+def categories(request):
+    listings = Listing.objects.all()
+
+    return render(request, "auctions/categories.html", {
+        "listings": listings
+    })
+
+@login_required
+def cate(request, category):
+    listings = Listing.objects.filter(category=category)
+
+    return render(request, "auctions/cate.html", {
+        "listings": listings,
+        "category": category
+    })
+
+    

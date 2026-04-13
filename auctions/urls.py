@@ -1,5 +1,5 @@
-from django.urls import path
-
+from django.urls import path,include
+from django.contrib import admin
 from . import views
 
 urlpatterns = [
@@ -14,6 +14,12 @@ urlpatterns = [
     path("watchlist/", views.watchlist_page, name="watchlist_page"),
     path("bidding/<int:id>/", views.bidding, name="bidding"),
     path("close/<int:id>/", views.close_auction, name="close_auction"),
+    path("category", views.categories, name="category"),
+    path("category/<str:category>/", views.cate, name="cate"),
+    
+
+
+
 
 
 ]
